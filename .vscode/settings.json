@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.validate": ["javascript"],
+  "files.eol": "\n",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "cSpell.language": "en,es-ES",
+  "cSpell.words": ["expo", "reactnative", "nativo", "pantalla", "usuario", "funcionalidad"]
+}
