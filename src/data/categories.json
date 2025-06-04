@@ -1,0 +1,18 @@
+[
+  { "id": "0001", "name": "Art and Crafts" },
+  { "id": "0002", "name": "Beauty Products" },
+  { "id": "0003", "name": "Jewelry" },
+  { "id": "0004", "name": "Toys" },
+  { "id": "0005", "name": "Sports Equipment" },
+  { "id": "0006", "name": "Pet Supplies" },
+  { "id": "0007", "name": "Outdoor Gear" },
+  { "id": "0008", "name": "Travel Accessories" },
+  { "id": "0009", "name": "Clothing" },
+  { "id": "0010", "name": "Home Appliances" },
+  { "id": "0011", "name": "Musical Instruments" },
+  { "id": "0012", "name": "Health Supplements" },
+  { "id": "0013", "name": "Books" },
+  { "id": "0014", "name": "Office Supplies" },
+  { "id": "0015", "name": "Kitchenware" },
+  { "id": "0016", "name": "Electronics" }
+]

@@ -1,44 +1,42 @@
+import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { loadFonts } from './src/theme/fonts.js';
+import ShopStack from './src/navigation/ShopStack.jsx';
+import DrawerNavigator from './src/navigation/DrawerNavigator.jsx';
 
 export default function App() {
-  const [task, setTask] = useState('');
-  const [taskList, setTaskList] = useState([]);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  const addTask = () => {
-    if (task.trim() !== '') {
-      setTaskList((prevTasks) => [...prevTasks, { id: Math.random().toString(), title: task }]);
-      setTask('');
-    }
-  };
+  useEffect(() => {
+    const loadAllFonts = async () => {
+      await loadFonts();
+      setFontsLoaded(true);
+    };
+    loadAllFonts();
+  }, []);
+  if (!fontsLoaded) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading Fonts...</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
+    <NavigationContainer>
       <StatusBar style="auto" />
-      <TextInput placeholder="Agree Task" value={task} onChangeText={setTask} />
-      <Button title="ADD" onPress={addTask} />
-      <FlatList
-        data={taskList}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Text style={styles.tarea}> {item.title}</Text>}
-      />
-    </View>
+      <DrawerNavigator />
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ecd6d6',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  tarea: {
-    fontSize: 18,
-    backgroundColor: '#f9c2ff',
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
   },
 });
