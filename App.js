@@ -1,9 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { loadFonts } from './src/theme/fonts.js';
-import ShopStack from './src/navigation/ShopStack.jsx';
 import DrawerNavigator from './src/navigation/DrawerNavigator.jsx';
 
 export default function App() {
@@ -26,7 +24,6 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
       <DrawerNavigator />
     </NavigationContainer>
   );

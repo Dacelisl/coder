@@ -1,72 +1,61 @@
-// screens/Home/Home.js
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView, Pressable } from 'react-native';
-import Header from '../../components/Header';
-import Search from '../../components/Search';
-import ProductItem from '../../components/ProductItem.js';
-import allProducts from '../../data/products.json';
-import Banner from './Banner.jsx';
-import { COLORS } from '../../theme/colors';
+import React from 'react';
+import { Text, StyleSheet, FlatList, Pressable, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CustomDrawer from '../../components/CustomDrawer.jsx';
+import HeaderLayout from '../../components/HeaderLayout ';
+import ProductItem from '../../components/ProductItem';
+import Banner from './Banner';
+import allProducts from '../../data/products.json';
+import { COLORS } from '../../theme/colors';
 
 const Home = () => {
   const navigation = useNavigation();
-  const [keyword, setKeyword] = useState('');
-
-  const filteredProducts = allProducts.filter((product) =>
-    product.name.toLowerCase().includes(keyword.toLowerCase()),
-  );
 
   return (
-    <>
-      <View style={{ backgroundColor: COLORS.secondary, height: 130, width: '100%' }}>
-        <Header title="Bienvenido 👋" />
-        <Search onSearch={setKeyword} />
-      </View>
-      <ScrollView style={styles.container}>
-        <Banner />
-        <View style={styles.section}>
-          <Text style={styles.title}>Productos destacados</Text>
-          <FlatList
-            horizontal
-            data={filteredProducts.slice(0, 6)}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <ProductItem item={item} />}
-            showsHorizontalScrollIndicator={false}
+    <HeaderLayout title="Bienvenido 👋">
+      <FlatList
+        data={allProducts.slice(0, 4)}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ProductItem
+            item={item}
+            onPress={() => navigation.navigate('ItemDetail', { product: item })}
           />
-        </View>
-
-        <Pressable
-          style={styles.seeMoreButton}
-          onPress={() => navigation.navigate('ItemListCategories')}
-        >
-          <Text style={styles.seeMoreText}>Ver todos los productos</Text>
-        </Pressable>
-      </ScrollView>
-    </>
+        )}
+        ListHeaderComponent={
+          <View>
+            <Banner />
+            <Text style={styles.title}>Productos destacados</Text>
+          </View>
+        }
+        ListFooterComponent={
+          <Pressable
+            style={styles.seeMoreButton}
+            onPress={() => navigation.navigate('ItemListCategories')}
+          >
+            <Text style={styles.seeMoreText}>Ver todos los productos</Text>
+          </Pressable>
+        }
+        contentContainerStyle={styles.scrollContainer}
+      />
+    </HeaderLayout>
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.surface,
-    paddingHorizontal: 12,
-  },
-  section: {
-    marginTop: 5,
+  scrollContainer: {
+    paddingBottom: 30,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     color: COLORS.text,
-    marginBottom: 10,
+    marginTop: 5,
+    marginBottom: 2,
   },
   seeMoreButton: {
-    marginVertical: 15,
+    marginVertical: 20,
     alignSelf: 'center',
     padding: 10,
     backgroundColor: COLORS.primary,

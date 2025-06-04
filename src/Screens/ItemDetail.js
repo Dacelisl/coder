@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, Pressable, Text, StyleSheet, Image } from 'react-native';
-import Header from '../components/Header.js';
+import React from 'react';
+import { ScrollView, Pressable, Text, StyleSheet, Image, View } from 'react-native';
+import HeaderLayout from '../components/HeaderLayout .js';
 import { COLORS } from '../theme/colors.js';
 
 const ItemDetail = ({ route, navigation }) => {
   const { product } = route.params;
 
   return (
-    <View>
-      {/*  <View style={{ alignContent: 'space-between', height: 60, width: '100%' }}>
-        <Header title={'Detail'} />
-      </View> */}
-
-      <Pressable
-        style={{ backgroundColor: COLORS.secondaryLighter }}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={{ marginLeft: 20, marginVertical: 1, fontSize: 16 }}>Go Back</Text>
-      </Pressable>
-
-      <View style={styles.container}>
+    <HeaderLayout title={product.name}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Image source={{ uri: product.image }} style={styles.image} resizeMode="cover" />
-
         <View style={styles.detailsContainer}>
           <Text style={styles.title}>{product.name}</Text>
           <Text style={styles.description}>{product.description}</Text>
@@ -33,17 +21,17 @@ const ItemDetail = ({ route, navigation }) => {
             <Text style={styles.buttonText}>Add to Cart</Text>
           </Pressable>
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </HeaderLayout>
   );
 };
 
 export default ItemDetail;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
     padding: 20,
-    backgroundColor: '#fff',
+    paddingBottom: 50,
   },
   image: {
     width: '100%',

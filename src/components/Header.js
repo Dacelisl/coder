@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { COLORS } from '../theme/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
-const Header = ({ title, onMenuPress }) => {
+const Header = ({ title }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <Pressable onPress={onMenuPress} style={styles.menuIcon}>
-        <Ionicons name="menu" size={30} color="white" />
+      <Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+        <Ionicons name="menu" size={28} color={COLORS.textOnPrimary} />
       </Pressable>
       <Text style={styles.title}>{title}</Text>
     </View>
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginLeft: 10,
     fontWeight: 'bold',
-    marginLeft: 60,
+    marginLeft: 30,
   },
   menuIcon: {
     marginTop: 5,

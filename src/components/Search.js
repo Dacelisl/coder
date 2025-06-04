@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { COLORS } from '../theme/colors.js';
 
-const Search = ({ onSearch }) => {
+const Search = ({ onSearch, navigation }) => {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const [find, setFind] = useState(false);
@@ -28,7 +28,10 @@ const Search = ({ onSearch }) => {
   };
   const Search = () => {
     if (!error && input) {
-      onSearch(input.trim().toLowerCase());
+      if (onSearch) onSearch(input.trim().toLowerCase());
+      if (navigation) {
+        navigation.navigate('SearchResults', { keyword: input.trim().toLowerCase() });
+      }
       setFind(true);
     }
   };

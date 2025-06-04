@@ -9,9 +9,11 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawer {...props} />}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
-      <Drawer.Screen name="MainTabs" component={TabNavigator} />
+      <Drawer.Screen name="RootTabs" component={TabNavigator} />
     </Drawer.Navigator>
   );
 };

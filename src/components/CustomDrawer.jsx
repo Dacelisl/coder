@@ -1,85 +1,62 @@
 // components/CustomDrawer.js
 import React from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  Animated,
-  Dimensions,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
 import CATEGORIES from '../data/categories.json';
-import { COLORS } from '../theme/colors';
+import { CommonActions } from '@react-navigation/native';
 
-const screenWidth = Dimensions.get('window').width;
-
-const CustomDrawer = ({ visible, onClose, navigation }) => {
-  const translateX = React.useRef(new Animated.Value(-screenWidth)).current;
-
-  React.useEffect(() => {
-    Animated.timing(translateX, {
-      toValue: visible ? 0 : -screenWidth,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-  }, [visible]);
-
-  if (!visible) return null;
+const CustomDrawer = (props) => {
+  const { navigation } = props;
 
   return (
-    <TouchableWithoutFeedback onPress={onClose}>
-      <View style={styles.overlay}>
-        <Animated.View style={[styles.drawer, { transform: [{ translateX }] }]}>
-          <Text style={styles.title}>Categorías</Text>
-          {CATEGORIES.map((cat) => (
-            <Pressable
-              key={cat.id}
-              style={styles.item}
-              onPress={() => {
-                navigation.navigate('ItemListCategories', { category: cat.name });
-                onClose(); // cerrar el drawer
-              }}
-            >
-              <Text style={styles.text}>{cat.name}</Text>
-            </Pressable>
-          ))}
-        </Animated.View>
-      </View>
-    </TouchableWithoutFeedback>
+    <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Categorías</Text>
+
+      {CATEGORIES.map((category) => (
+        <Pressable
+          key={category.id}
+          onPress={() => {
+            navigation.dispatch(
+              CommonActions.navigate({
+                name: 'RootTabs',
+                params: {
+                  screen: 'Shop', // Tab
+                  params: {
+                    screen: 'ItemListCategories', // Stack dentro del tab
+                    params: { category: category.name },
+                  },
+                },
+              }),
+            );
+          }}
+          style={styles.item}
+        >
+          <Text style={styles.text}>{category.name}</Text>
+        </Pressable>
+      ))}
+    </DrawerContentScrollView>
   );
 };
 
 export default CustomDrawer;
 
 const styles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    zIndex: 100,
-  },
-  drawer: {
-    width: screenWidth * 0.7,
-    height: '100%',
-    backgroundColor: COLORS.surface,
-    paddingHorizontal: 20,
-    paddingVertical: 40,
+  container: {
+    padding: 16,
+    backgroundColor: '#f4f4f4',
+    flexGrow: 1,
   },
   title: {
     fontSize: 20,
-    marginBottom: 20,
-    color: COLORS.primary,
+    marginBottom: 16,
     fontWeight: 'bold',
+    color: '#333',
   },
   item: {
     paddingVertical: 12,
   },
   text: {
     fontSize: 16,
-    color: COLORS.text,
+    color: '#444',
   },
 });
