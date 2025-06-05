@@ -4,6 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { loadFonts } from './src/theme/fonts.js';
 import DrawerNavigator from './src/navigation/DrawerNavigator.jsx';
 
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store.js';
+
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
@@ -23,9 +26,11 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <DrawerNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <DrawerNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

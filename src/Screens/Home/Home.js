@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, StyleSheet, FlatList, Pressable, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import HeaderLayout from '../../components/HeaderLayout ';
+import { useDispatch, useSelector } from 'react-redux';
+
+import HeaderLayout from '../../components/HeaderLayout';
 import ProductItem from '../../components/ProductItem';
 import Banner from './Banner';
-import allProducts from '../../data/products.json';
 import { COLORS } from '../../theme/colors';
+
+import allProducts from '../../data/products.json';
+import { setProducts } from '../../redux/slices/productSlice';
 
 const Home = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const products = useSelector((state) => state.product.products);
+
+  useEffect(() => {
+    if (!products || products.length === 0) {
+      dispatch(setProducts(allProducts));
+    }
+  }, []);
+
+  const featured = products.slice(0, 4);
 
   return (
     <HeaderLayout title="Bienvenido 👋">
       <FlatList
-        data={allProducts.slice(0, 4)}
+        data={featured}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ProductItem
@@ -30,7 +45,7 @@ const Home = () => {
         ListFooterComponent={
           <Pressable
             style={styles.seeMoreButton}
-            onPress={() => navigation.navigate('ItemListCategories')}
+            onPress={() => navigation.navigate('ItemListCategories', { category: 'Productos' })}
           >
             <Text style={styles.seeMoreText}>Ver todos los productos</Text>
           </Pressable>

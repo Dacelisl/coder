@@ -1,0 +1,44 @@
+[
+  {
+    "id": "6e7cffac-9c10-4084-a9b3-869fb45f7e2c",
+    "name": "Extraordinary Object",
+    "price": 284.33,
+    "manufacturer": "Ziemann Ltd",
+    "category": "Beauty Products"
+  },
+  {
+    "id": "2c928337-76a2-45a4-a66a-b8cc27ad439c",
+    "name": "Fantastic Artifact",
+    "price": 1233.76,
+    "manufacturer": "Larson, Conroy and Yost",
+    "category": "Art and Crafts"
+  },
+  {
+    "id": "25c23b79-aa46-4878-83ea-f36a666e2781",
+    "name": "Wonderful Tool",
+    "price": 738.84,
+    "manufacturer": "Bergnaum Ltd",
+    "category": "Travel Accessories"
+  },
+  {
+    "id": "76f459c2-c386-44fd-a829-28522d099082",
+    "name": "Majestic Doozy",
+    "price": 254.2,
+    "manufacturer": "Weissnat LLC",
+    "category": "Clothing"
+  },
+  {
+    "id": "a50af4e8-7a6f-4c41-a5f4-7e9dcb792338",
+    "name": "Mega Tool",
+    "price": 770.28,
+    "manufacturer": "Torp Ltd",
+    "category": "Outdoor Gear"
+  },
+  {
+    "id": "da5b0109-cb6b-4efc-81b3-299d5d116428",
+    "name": "Remarkable Doozy",
+    "price": 60.05,
+    "manufacturer": "Wilderman PLC",
+    "category": "Sports Equipment"
+  }
+]

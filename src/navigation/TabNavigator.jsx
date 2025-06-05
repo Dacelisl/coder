@@ -1,4 +1,3 @@
-// navigation/BottomTabsNavigator.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CartStack from './CartStack.jsx';

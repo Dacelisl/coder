@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Cart from '../Screens/Cart.js';
+import Cart from '../Screens/cart/Cart';
 
 const Stack = createNativeStackNavigator();
 

@@ -1,34 +1,47 @@
-// components/CustomDrawer.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-import CATEGORIES from '../data/categories.json';
 import { CommonActions } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setCategories, selectCategory } from '../redux/slices/categorySlice';
+import CATEGORIES from '../data/categories.json';
 
 const CustomDrawer = (props) => {
   const { navigation } = props;
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categories.categories);
+
+  useEffect(() => {
+    if (!categories || categories.length === 0) {
+      dispatch(setCategories(CATEGORIES));
+    }
+  }, [categories, dispatch]);
+
+  const handleCategoryPress = (categoryName) => {
+    dispatch(selectCategory(categoryName));
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'RootTabs',
+        params: {
+          screen: 'Shop',
+          params: {
+            screen: 'ItemListCategories',
+            params: { category: categoryName },
+          },
+        },
+      }),
+    );
+  };
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       <Text style={styles.title}>Categorías</Text>
 
-      {CATEGORIES.map((category) => (
+      {categories.map((category) => (
         <Pressable
           key={category.id}
-          onPress={() => {
-            navigation.dispatch(
-              CommonActions.navigate({
-                name: 'RootTabs',
-                params: {
-                  screen: 'Shop', // Tab
-                  params: {
-                    screen: 'ItemListCategories', // Stack dentro del tab
-                    params: { category: category.name },
-                  },
-                },
-              }),
-            );
-          }}
+          onPress={() => handleCategoryPress(category.name)}
           style={styles.item}
         >
           <Text style={styles.text}>{category.name}</Text>

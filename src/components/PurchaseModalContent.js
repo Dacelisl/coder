@@ -1,4 +1,3 @@
-// components/PurchaseModalContent.jsx
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Pressable, Modal, StyleSheet } from 'react-native';
 import { COLORS } from '../theme/colors';

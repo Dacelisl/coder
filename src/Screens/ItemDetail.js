@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Pressable, Text, StyleSheet, Image, View } from 'react-native';
-import HeaderLayout from '../components/HeaderLayout .js';
+import HeaderLayout from '../components/HeaderLayout.js';
 import { COLORS } from '../theme/colors.js';
 
 const ItemDetail = ({ route, navigation }) => {

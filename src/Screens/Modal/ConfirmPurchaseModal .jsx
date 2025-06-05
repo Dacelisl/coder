@@ -2,9 +2,14 @@
 import React, { useState } from 'react';
 import PurchaseModalContent from '../../components/PurchaseModalContent.js';
 
+import { addToCart } from '../../redux/slices/cartSlice.js';
+import { useDispatch } from 'react-redux';
+
 const ConfirmPurchaseModal = ({ route, navigation }) => {
   const { product } = route.params;
   const [visible, setVisible] = useState(true);
+
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setVisible(false);
@@ -12,8 +17,13 @@ const ConfirmPurchaseModal = ({ route, navigation }) => {
   };
 
   const handleConfirm = (quantity) => {
-    // Aquí puedes hacer lo que necesites con la cantidad seleccionada
-    console.log('Producto confirmado:', product.name, 'Cantidad:', quantity);
+    const productData = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: quantity,
+    };
+    dispatch(addToCart(productData));
     handleClose();
   };
 
