@@ -1,4 +1,3 @@
-// screens/Modal/ConfirmPurchaseModal.jsx
 import React, { useState } from 'react';
 import PurchaseModalContent from '../../components/PurchaseModalContent.js';
 

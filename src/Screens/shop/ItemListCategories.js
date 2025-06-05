@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ProductItem from '../components/ProductItem.js';
-import allProducts from '../data/products.json';
-import { COLORS } from '../theme/colors.js';
-import HeaderLayout from '../components/HeaderLayout.js';
+import ProductItem from '../../components/ProductItem.js';
+import allProducts from '../../data/products.json';
+import { COLORS } from '../../theme/colors.js';
+import HeaderLayout from '../../components/HeaderLayout.js';
 
-import { setProducts, filterProductsByCategory } from '../redux/slices/productSlice.js';
+import { setProducts, filterProductsByCategory } from '../../redux/slices/productSlice.js';
 
 const ItemListCategories = ({ route }) => {
   const dispatch = useDispatch();

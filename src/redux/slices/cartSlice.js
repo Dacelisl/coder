@@ -53,14 +53,9 @@ const cartSlice = createSlice({
     increaseQuantity: (state, action) => {
       const id = action.payload;
       const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem && existingItem.quantity > 1) {
-        existingItem.quantity += 1;
-        state.totalQuantity += 1;
-        state.totalAmount += existingItem.price;
-      } else {
-        cartSlice.caseReducers.removeFromCart(state, action);
-      }
+      existingItem.quantity += 1;
+      state.totalQuantity += 1;
+      state.totalAmount += existingItem.price;
     },
 
     clearCart: (state) => {

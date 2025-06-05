@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
+// src/components/OrderItem.jsx
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { Feather } from '@expo/vector-icons';
 import { COLORS } from '../theme/colors';
+
 const OrderItem = ({ order }) => {
-  const total = order.items.reduce((acc, item) => (acc += item.price * item.quantity), 0);
+  const formattedDate = new Date(order.date).toLocaleString();
+
   return (
-    <View style={styles.card}>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>{new Date(order.createAt).toLocaleString()}</Text>
-        <Text style={styles.text2}>${total}</Text>
-      </View>
-      <Feather name="search" size={24} color={COLORS.shadow} />
+    <View style={styles.container}>
+      <Text style={styles.date}>{formattedDate}</Text>
+      <Text style={styles.amount}>Total: ${order.totalAmount.toFixed(2)}</Text>
+      <Text style={styles.items}>Artículos: {order.items.length}</Text>
     </View>
   );
 };
@@ -18,32 +18,27 @@ const OrderItem = ({ order }) => {
 export default OrderItem;
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: COLORS.primaryLight,
+  container: {
+    backgroundColor: COLORS.secondaryLighter,
+    padding: 12,
     borderRadius: 8,
-    shadowColor: '#000',
+    marginVertical: 6,
+    shadowColor: COLORS.shadow,
+    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowRadius: 2,
     elevation: 2,
   },
-  textContainer: {
-    width: '70%',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  date: {
+    fontSize: 14,
     color: COLORS.text,
   },
-  text2: {
+  amount: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+  },
+  items: {
     fontSize: 14,
     color: COLORS.text,
   },

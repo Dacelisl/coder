@@ -2,11 +2,10 @@ import { StyleSheet, View, FlatList } from 'react-native';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CategoryItem from '../components/CategoryItem.js';
-import { COLORS } from '../theme/colors.js';
-
-import { setCategories } from '../redux/slices/categorySlice';
-import CATEGORIES from '../data/categories.json';
+import CategoryItem from '../../components/CategoryItem.js';
+import { COLORS } from '../../theme/colors.js';
+import { setCategories } from '../../redux/slices/categorySlice.js';
+import CATEGORIES from '../../data/categories.js';
 
 const Categories = () => {
   const dispatch = useDispatch();

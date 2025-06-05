@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ItemDetail from '../Screens/ItemDetail.js';
-import ItemListCategories from '../Screens/ItemListCategories.js';
+import ItemDetail from '../../src/Screens/shop/ItemDetail.js';
+import ItemListCategories from '.././Screens/shop/ItemListCategories.js';
 import Home from '../Screens/Home/Home.js';
 import SearchResultsScreen from '../Screens/SearchResultsScreen .jsx';
-import ConfirmPurchaseModal from '../Screens/Modal/ConfirmPurchaseModal .jsx';
+import ConfirmPurchaseModal from '../Screens/Modal/ConfirmPurchaseModal.jsx';
 
 const Stack = createNativeStackNavigator();
 
