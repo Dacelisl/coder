@@ -1,57 +1,56 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, StyleSheet, FlatList, Pressable, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-
 import HeaderLayout from '../../components/HeaderLayout';
 import ProductItem from '../../components/ProductItem';
 import Banner from './Banner';
 import { COLORS } from '../../theme/colors';
-
-import allProducts from '../../data/products.json';
-import { setProducts } from '../../redux/slices/productSlice';
+import { useGetProductsQuery } from '../../services/shopService';
 
 const Home = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
-  const products = useSelector((state) => state.product.products);
-
-  useEffect(() => {
-    if (!products || products.length === 0) {
-      dispatch(setProducts(allProducts));
-    }
-  }, []);
-
-  const featured = products.slice(0, 4);
+  const { data, isLoading, error } = useGetProductsQuery();
 
   return (
     <HeaderLayout title="Bienvenido 👋">
-      <FlatList
-        data={featured}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ProductItem
-            item={item}
-            onPress={() => navigation.navigate('ItemDetail', { product: item })}
+      {error ? (
+        <>
+          <Text style={styles.emptyText}>Oh no, there was an error</Text>
+        </>
+      ) : isLoading ? (
+        <>
+          <Text style={styles.emptyText}>Loading...</Text>
+        </>
+      ) : data ? (
+        <>
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <ProductItem
+                item={item}
+                onPress={() => navigation.navigate('ItemDetail', { product: item })}
+              />
+            )}
+            ListHeaderComponent={
+              <View>
+                <Banner />
+                <Text style={styles.title}>Productos destacados</Text>
+              </View>
+            }
+            ListFooterComponent={
+              <Pressable
+                style={styles.seeMoreButton}
+                onPress={() => navigation.navigate('ItemListCategories', { category: 'Productos' })}
+              >
+                <Text style={styles.seeMoreText}>Ver todos los productos</Text>
+              </Pressable>
+            }
+            contentContainerStyle={styles.scrollContainer}
           />
-        )}
-        ListHeaderComponent={
-          <View>
-            <Banner />
-            <Text style={styles.title}>Productos destacados</Text>
-          </View>
-        }
-        ListFooterComponent={
-          <Pressable
-            style={styles.seeMoreButton}
-            onPress={() => navigation.navigate('ItemListCategories', { category: 'Productos' })}
-          >
-            <Text style={styles.seeMoreText}>Ver todos los productos</Text>
-          </Pressable>
-        }
-        contentContainerStyle={styles.scrollContainer}
-      />
+        </>
+      ) : null}
     </HeaderLayout>
   );
 };
@@ -79,5 +78,11 @@ const styles = StyleSheet.create({
   seeMoreText: {
     color: COLORS.textOnPrimary,
     fontWeight: 'bold',
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 16,
+    color: COLORS.text,
   },
 });

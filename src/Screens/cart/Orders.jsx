@@ -1,12 +1,29 @@
 // src/screens/Orders.jsx
-import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { useGetOrdersQuery } from '../../services/shopService';
 import OrderItem from '../../components/OrderItem';
 import { COLORS } from '../../theme/colors';
 
 const Orders = () => {
-  const orders = useSelector((state) => state.orders.orders);
+  const { data: orders = [], isLoading, isError } = useGetOrdersQuery();
+
+  if (isLoading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+        <Text style={styles.loadingText}>Cargando órdenes...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.errorText}>Hubo un error al cargar las órdenes.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -41,5 +58,21 @@ const styles = StyleSheet.create({
   empty: {
     fontSize: 16,
     color: COLORS.text,
+    textAlign: 'center',
+    marginTop: 50,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: COLORS.text,
+  },
+  errorText: {
+    fontSize: 16,
+    color: COLORS.error,
   },
 });

@@ -1,31 +1,46 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { FlatList, Pressable } from 'react-native-gesture-handler';
-import { COLORS } from '../../theme/colors';
+import { useDispatch, useSelector } from 'react-redux';
+
 import CartItem from '../../components/CartItem';
 import PurchaseSuccessModal from '../../components/PurchaseSuccessModal';
-import { useDispatch, useSelector } from 'react-redux';
+import AlertModal from '../../components/AlertModal';
+import { COLORS } from '../../theme/colors';
+
 import { clearCart } from '../../redux/slices/cartSlice';
-import { addOrder } from '../../redux/slices/ordersSlice';
+import { useCreateOrderMutation } from '../../services/shopService';
 
 const Cart = () => {
   const [successVisible, setSuccessVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-  const cart = useSelector((state) => state.cart);
 
+  const cartItems = useSelector((state) => state.cart.items);
+  const user = useSelector((state) => state.auth.user);
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const handleConfirmOrder = () => {
-    dispatch(
-      addOrder({
-        items: cart.items,
-        totalAmount: cart.totalAmount,
-      }),
-    );
-    dispatch(clearCart());
-    setSuccessVisible(true);
+  const [createOrder, { isLoading, isSuccess, isError }] = useCreateOrderMutation();
+
+  const handleConfirmOrder = async () => {
+    try {
+      console.log('user', user);
+
+      if (!user) {
+        setModalVisible(true);
+        return;
+      }
+      await createOrder({
+        items: cartItems,
+        totalAmount: total,
+        createdAt: new Date().toISOString(),
+      }).unwrap();
+      dispatch(clearCart());
+      setSuccessVisible(true);
+    } catch (error) {
+      console.error('Error al crear la orden:', error);
+    }
   };
 
   return (
@@ -37,15 +52,27 @@ const Cart = () => {
         renderItem={({ item }) => <CartItem cartItem={item} />}
         ListEmptyComponent={<Text style={styles.emptyText}>Tu carrito está vacío</Text>}
       />
+
       {cartItems.length > 0 && (
         <View style={styles.confirmContainer}>
-          <Pressable onPress={handleConfirmOrder}>
-            <Text style={styles.confirmText}>Confirmar</Text>
+          <Pressable onPress={handleConfirmOrder} disabled={isLoading}>
+            <Text style={[styles.confirmText, isLoading && { opacity: 0.5 }]}>
+              {isLoading ? 'Procesando...' : 'Confirmar'}
+            </Text>
           </Pressable>
           <Text style={styles.confirmText}>Total: ${total.toFixed(2)}</Text>
         </View>
       )}
+
       <PurchaseSuccessModal visible={successVisible} onClose={() => setSuccessVisible(false)} />
+      <AlertModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        type="info"
+        title="Registrese!"
+        message="Registrese para continuar con la compra ."
+        buttonLabel="Aeptar"
+      />
     </View>
   );
 };

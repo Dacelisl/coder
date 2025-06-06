@@ -1,16 +1,21 @@
 // src/components/OrderItem.jsx
-import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../theme/colors';
 
 const OrderItem = ({ order }) => {
-  const formattedDate = new Date(order.date).toLocaleString();
+  const { createdAt: date, totalAmount, items } = order;
+
+  const formattedDate = date ? new Date(date).toLocaleString() : 'Fecha no disponible';
 
   return (
     <View style={styles.container}>
       <Text style={styles.date}>{formattedDate}</Text>
-      <Text style={styles.amount}>Total: ${order.totalAmount.toFixed(2)}</Text>
-      <Text style={styles.items}>Artículos: {order.items.length}</Text>
+      <Text style={styles.itemsDetail}>
+        {items?.map((item) => `${item.name} x${item.quantity}`).join(', ')}
+      </Text>
+      <Text style={styles.items}>Artículos: {items?.length ?? 0}</Text>
+      <Text style={styles.amount}>Total: ${Number(totalAmount).toFixed(2)}</Text>
     </View>
   );
 };
@@ -41,5 +46,10 @@ const styles = StyleSheet.create({
   items: {
     fontSize: 14,
     color: COLORS.text,
+  },
+  itemsDetail: {
+    marginTop: 4,
+    fontSize: 12,
+    color: COLORS.textLight,
   },
 });

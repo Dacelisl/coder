@@ -5,14 +5,14 @@ import Search from './Search';
 import { COLORS } from '../theme/colors';
 import { useNavigation } from '@react-navigation/native';
 
-const HeaderLayout = ({ children, title, onSearch }) => {
+const HeaderLayout = ({ children, title }) => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.headerContainer}>
         <Header title={title} />
-        <Search onSearch={onSearch} navigation={navigation} />
+        <Search navigation={navigation} />
       </View>
       <View style={styles.content}>{children}</View>
     </View>

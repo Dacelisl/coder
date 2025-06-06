@@ -21,10 +21,11 @@ export const COLORS = {
   textOnPrimary: '#FFFFFF', // para botones primarios
 
   // Estados y feedback
-  border: '#D4E6D3',
-  error: '#F26157',
-  warning: '#FFD6A5',
+  border: '#CCCCCC',
   success: '#4CAF50',
+  error: '#F44336',
+  warning: '#FF9800',
+  info: '#2196F3',
 
   // Accesos directos
   disabled: '#C7D7C2',

@@ -1,42 +1,65 @@
-import React, { useEffect } from 'react';
-import { View, FlatList } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-
-import ProductItem from '../../components/ProductItem.js';
-import allProducts from '../../data/products.json';
-import { COLORS } from '../../theme/colors.js';
+import React from 'react';
+import { View, FlatList, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import HeaderLayout from '../../components/HeaderLayout.js';
-
-import { setProducts, filterProductsByCategory } from '../../redux/slices/productSlice.js';
+import ProductItem from '../../components/ProductItem.js';
+import { COLORS } from '../../theme/colors.js';
+import { useGetProductsQuery } from '../../services/shopService.js';
 
 const ItemListCategories = ({ route }) => {
-  const dispatch = useDispatch();
   const { category } = route.params || {};
 
-  const filteredProducts = useSelector((state) => state.product.filteredProducts);
-  const all = useSelector((state) => state.product.products);
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
-  useEffect(() => {
-    if (!all || all.length === 0 || category === 'Productos') {
-      dispatch(setProducts(allProducts));
-    }
-    if (category) {
-      dispatch(filterProductsByCategory(category));
-    }
-  }, [category]);
+  const productsToRender =
+    category === 'Productos'
+      ? products
+      : products?.filter((product) => product.category === category);
 
   return (
     <HeaderLayout title={category || 'Productos'}>
-      <View style={{ flex: 1, backgroundColor: COLORS.surface }}>
-        <FlatList
-          data={filteredProducts.length > 0 ? filteredProducts : all}
-          renderItem={({ item }) => <ProductItem item={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ padding: 10 }}
-        />
+      <View style={styles.container}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={COLORS.primary} style={styles.loader} />
+        ) : error ? (
+          <Text style={styles.errorText}>Ocurrió un error al cargar los productos.</Text>
+        ) : productsToRender?.length > 0 ? (
+          <FlatList
+            data={productsToRender}
+            renderItem={({ item }) => <ProductItem item={item} />}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.listContainer}
+          />
+        ) : (
+          <Text style={styles.emptyText}>No hay productos disponibles en esta categoría.</Text>
+        )}
       </View>
     </HeaderLayout>
   );
 };
 
 export default ItemListCategories;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.surface,
+  },
+  loader: {
+    marginTop: 40,
+  },
+  errorText: {
+    color: COLORS.error,
+    textAlign: 'center',
+    marginTop: 40,
+    fontSize: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 40,
+    fontSize: 16,
+    color: COLORS.text,
+  },
+  listContainer: {
+    padding: 10,
+  },
+});

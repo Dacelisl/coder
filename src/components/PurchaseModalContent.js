@@ -48,7 +48,7 @@ export default PurchaseModalContent;
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: COLORS.modalBackground,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.text,
     marginBottom: 16,
   },
   quantitySelector: {

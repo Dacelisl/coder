@@ -1,36 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useGetProductsQuery } from '../services/shopService';
 import ProductItem from '../components/ProductItem';
 import HeaderLayout from '../components/HeaderLayout';
 import { COLORS } from '../theme/colors';
 
-import { setProducts } from '../redux/slices/productSlice';
-import allProducts from '../data/products.json';
-
 const SearchResultsScreen = ({ route, navigation }) => {
   const { keyword } = route.params;
-  const dispatch = useDispatch();
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
-  const products = useSelector((state) => state.product.products);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-
-  useEffect(() => {
-    if (!products || products.length === 0) {
-      dispatch(setProducts(allProducts));
-    } else {
-      const results = products.filter((product) =>
-        product.name.toLowerCase().includes(keyword.toLowerCase()),
-      );
-      setFilteredProducts(results);
-    }
-  }, [keyword, products]);
+  const filteredProducts =
+    products?.filter((product) => product.name.toLowerCase().includes(keyword.toLowerCase())) || [];
 
   return (
     <HeaderLayout title={`Resultados para "${keyword}"`}>
       <View style={{ flex: 1, backgroundColor: COLORS.surface }}>
-        {filteredProducts.length ? (
+        {error ? (
+          <Text style={styles.empty}>Ocurrió un error al cargar los productos</Text>
+        ) : isLoading ? (
+          <Text style={styles.empty}>Cargando productos...</Text>
+        ) : filteredProducts.length > 0 ? (
           <FlatList
             data={filteredProducts}
             renderItem={({ item }) => (

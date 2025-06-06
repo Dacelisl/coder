@@ -1,32 +1,42 @@
 import { StyleSheet, View, FlatList } from 'react-native';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import React from 'react';
 import CategoryItem from '../../components/CategoryItem.js';
 import { COLORS } from '../../theme/colors.js';
-import { setCategories } from '../../redux/slices/categorySlice.js';
-import CATEGORIES from '../../data/categories.js';
+import { useGetCategoriesQuery } from '../../services/shopService.js';
 
 const Categories = () => {
-  const dispatch = useDispatch();
-  const categories = useSelector((state) => state.categories.categories);
-
-  useEffect(() => {
-    if (!categories || categories.length === 0) {
-      dispatch(setCategories(CATEGORIES));
-    }
-  }, [categories, dispatch]);
+  const { data, isLoading, error } = useGetCategoriesQuery();
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.surface }}>
-      <FlatList
-        data={categories}
-        renderItem={({ item }) => <CategoryItem category={item.name} />}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ padding: 10 }}
-      />
+      {error ? (
+        <>
+          <Text style={styles.emptyText}>Oh no, there was an error</Text>
+        </>
+      ) : isLoading ? (
+        <>
+          <Text style={styles.emptyText}>Loading...</Text>
+        </>
+      ) : data ? (
+        <>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => <CategoryItem category={item.name} />}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{ padding: 10 }}
+          />
+        </>
+      ) : null}
     </View>
   );
 };
 
 export default Categories;
+const styles = StyleSheet.create({
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 16,
+    color: COLORS.text,
+  },
+});
