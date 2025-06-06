@@ -2,19 +2,19 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
+import { useSQLiteContext } from 'expo-sqlite';
 
 import CartStack from './CartStack.jsx';
 import ShopStack from './ShopStack.jsx';
 import OrderStack from './OrderStack.jsx';
 import AuthStack from './AuthStack';
-
-import { logout } from '../redux/slices/authSlice.js';
+import { handleLogout } from '../services/sessionService.js';
 
 const Tab = createBottomTabNavigator();
-
 const TabNavigator = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const db = useSQLiteContext();
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -52,9 +52,9 @@ const TabNavigator = () => {
             name="Logout"
             component={ShopStack}
             listeners={{
-              tabPress: (e) => {
+              tabPress: async (e) => {
                 e.preventDefault();
-                dispatch(logout());
+                await handleLogout(db, dispatch);
               },
             }}
             options={{

@@ -1,36 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { loginUser } from '../../services/authService';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slices/authSlice';
 import { COLORS } from '../../theme/colors';
 import AlertModal from '../../components/AlertModal';
+import { useSQLiteContext } from 'expo-sqlite';
+import { persistUserSession, loadPersistedSession } from '../../services/sessionService';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
+  const [modal, setModal] = useState({ visible: false, title: '', message: '', type: 'info' });
+
+  const db = useSQLiteContext();
   const dispatch = useDispatch();
+
+  const showAlert = (title, message, type = 'warning') => {
+    setModal({ visible: true, title, message, type });
+  };
+  const closeAlert = () => {
+    setModal((prev) => ({ ...prev, visible: false }));
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await loadPersistedSession(db);
+        if (result?.email) {
+          dispatch(setUser({ uid: result.uid, email: result.email }));
+        }
+      } catch (err) {
+        console.log('Error al recuperar sesión:', err);
+      }
+    })();
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setModalVisible(true);
-      return;
+      return showAlert('Datos faltantes', 'Por favor, completa todos los campos.');
     }
     setLoading(true);
     try {
       const result = await loginUser(email, password);
-      const user = {
-        uid: result.user.uid,
-        email: result.user.email,
-        displayName: result.user.displayName,
-      };
+      const user = { uid: result.user.uid, email: result.user.email };
+      await persistUserSession(db, user);
       dispatch(setUser(user));
-      navigation.navigate('Shop');
+      navigation.reset({ index: 0, routes: [{ name: 'Shop' }] });
     } catch (error) {
       console.error('Login error:', error.message);
+      showAlert('Error de autenticación', 'Correo o contraseña incorrectos.', 'error');
     } finally {
       setLoading(false);
     }
@@ -59,13 +80,13 @@ const LoginScreen = ({ navigation }) => {
       <Text onPress={() => navigation.navigate('Register')} style={styles.link}>
         ¿No tienes cuenta? Regístrate
       </Text>
+
       <AlertModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        type="warning"
-        title="Datos faltantes"
-        message="Por favor, completa todos los campos requeridos antes de continuar."
-        buttonLabel="Entendido"
+        visible={modal.visible}
+        onClose={closeAlert}
+        type={modal.type}
+        title={modal.title}
+        message={modal.message}
       />
     </View>
   );

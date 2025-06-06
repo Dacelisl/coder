@@ -14,7 +14,6 @@ const useAuthListener = () => {
           setUser({
             email: firebaseUser.email,
             uid: firebaseUser.uid,
-            displayName: firebaseUser.displayName,
           }),
         );
       } else {
