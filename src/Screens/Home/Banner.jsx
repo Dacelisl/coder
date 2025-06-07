@@ -1,14 +1,16 @@
-// screens/Home/Banner.js
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import banner from '../../../assets/images/banner.jpg'; // Adjust the path as necessary
+import cyber from '../../../assets/images/cyber.jpg'; // Adjust the path as necessary
 import { COLORS } from '../../../src/theme/colors';
+import { useUserCity } from '../../hooks/useUserCity';
 
 const Banner = () => {
+  const { city } = useUserCity();
   return (
     <View style={styles.container}>
-      <Image source={banner} style={styles.image} resizeMode="cover" />
-      <Text style={styles.text}>¡Oferta limitada en productos naturales!</Text>
+      <Image source={cyber} style={styles.image} resizeMode="cover" />
+      <Text style={styles.text1}>¡SOLO HOY </Text>
+      <Text style={styles.text}>Envio Gratis a {city}!</Text>
     </View>
   );
 };
@@ -25,11 +27,19 @@ const styles = StyleSheet.create({
     height: 100,
     width: '100%',
   },
+  text1: {
+    position: 'absolute',
+    bottom: 28,
+    left: 20,
+    color: COLORS.textOnPrimary,
+    fontSize: 18,
+    fontWeight: 'condensedBold',
+  },
   text: {
     position: 'absolute',
-    bottom: 40,
-    left: 10,
-    color: COLORS.primaryDark,
+    bottom: 3,
+    left: 15,
+    color: COLORS.textOnPrimary,
     fontSize: 18,
     fontWeight: 'condensedBold',
   },
