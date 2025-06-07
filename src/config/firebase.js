@@ -3,17 +3,27 @@ import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getFirestore } from 'firebase/firestore';
+import Constants from 'expo-constants';
+
+const {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_DATABASE_URL,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID,
+} = Constants.expoConfig.extra;
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDoE4djLxsUItvW6W2-Qm47vVJD7DEifcA',
-  authDomain: 'codercommerce-3b298.firebaseapp.com',
-  databaseURL: 'https://codercommerce-3b298-default-rtdb.firebaseio.com',
-  projectId: 'codercommerce-3b298',
-  storageBucket: 'codercommerce-3b298.firebasestorage.app',
-  messagingSenderId: '407852051326',
-  appId: '1:407852051326:web:b8daf36763105e7135e12f',
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  databaseURL: FIREBASE_DATABASE_URL,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
 };
-
 const app = initializeApp(firebaseConfig);
 
 const auth = initializeAuth(app, {
