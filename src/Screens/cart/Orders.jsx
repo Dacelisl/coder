@@ -1,4 +1,3 @@
-// src/screens/Orders.jsx
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { useGetOrdersQuery } from '../../services/shopService';

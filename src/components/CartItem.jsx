@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ const CartItem = ({ cartItem }) => {
 
   return (
     <View style={styles.card}>
+      <Image source={{ uri: cartItem.image }} style={styles.image} resizeMode="stretch" />
       <View style={styles.textContainer}>
         <Text style={styles.name}>{cartItem.name}</Text>
         <Text style={styles.price}>Precio unitario: ${cartItem.price.toFixed(2)}</Text>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    padding: 12,
+    padding: 10,
     marginVertical: 5,
     backgroundColor: COLORS.primaryLight,
     borderRadius: 8,
@@ -60,6 +61,13 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginRight: 10,
+  },
+  image: {
+    width: '30%',
+    height: 100,
+    borderRadius: 10,
+    marginRight: 4,
+    backgroundColor: COLORS.backgroundImage,
   },
   name: {
     fontSize: 16,

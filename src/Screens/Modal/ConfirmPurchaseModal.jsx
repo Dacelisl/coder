@@ -18,6 +18,7 @@ const ConfirmPurchaseModal = ({ route, navigation }) => {
   const handleConfirm = (quantity) => {
     const productData = {
       id: product.id,
+      image: product.image,
       name: product.name,
       price: product.price,
       quantity: quantity,

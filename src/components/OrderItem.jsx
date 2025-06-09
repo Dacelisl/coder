@@ -1,22 +1,21 @@
-// src/components/OrderItem.jsx
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { COLORS } from '../theme/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderItem = ({ order }) => {
-  const { createdAt: date, totalAmount, items } = order;
-
-  const formattedDate = date ? new Date(date).toLocaleString() : 'Fecha no disponible';
+  const navigation = useNavigation();
+  const formattedDate = new Date(order.createdAt).toLocaleString();
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={() => navigation.navigate('OrderHistory', { order })}
+      style={styles.container}
+    >
       <Text style={styles.date}>{formattedDate}</Text>
-      <Text style={styles.itemsDetail}>
-        {items?.map((item) => `${item.name} x${item.quantity}`).join(', ')}
-      </Text>
-      <Text style={styles.items}>Artículos: {items?.length ?? 0}</Text>
-      <Text style={styles.amount}>Total: ${Number(totalAmount).toFixed(2)}</Text>
-    </View>
+      <Text style={styles.amount}>Total: ${order.totalAmount.toFixed(2)}</Text>
+      <Text style={styles.items}>Ver detalles</Text>
+    </Pressable>
   );
 };
 

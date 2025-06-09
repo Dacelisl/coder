@@ -15,7 +15,7 @@ const ShopStack = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="HomeStack" component={Home} options={{ headerShown: false }} />
+      <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Stack.Screen name="ItemListCategories" component={ItemListCategories} />
       <Stack.Screen name="ItemDetail" component={ItemDetail} />
       <Stack.Screen name="ConfirmPurchaseModal" component={ConfirmPurchaseModal} />
